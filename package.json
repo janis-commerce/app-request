@@ -21,7 +21,7 @@
 	"scripts": {
 		"lint": "eslint .",
 		"prepare": "husky install",
-		"test:coverage": "jest --collectCoverage",
+		"test:coverage": "jest --collectCoverage --passWithNoTests",
 		"validate:code": "npm run lint -- --fix  && jest --collectCoverage --passWithNoTests"
 	},
 	"devDependencies": {
