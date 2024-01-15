@@ -26,6 +26,8 @@ jobs:
       run: |
         npm install
         npm run build-docs
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - name: auto-commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
