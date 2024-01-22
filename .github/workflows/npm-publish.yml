@@ -12,7 +12,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-      - run: npm i
+      - run: npm i -f
+        env:
+          NPM_TOKEN: ${{ secrets.npm_token }}
       - run: npm run test:coverage
 
   publish-npm:
@@ -24,8 +26,10 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm i
-      - run: npm publish --access public
+      - run: npm i -f
+        env:
+          NPM_TOKEN: ${{ secrets.npm_token }}
+      - run: npm publish --access private
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
