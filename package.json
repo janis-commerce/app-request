@@ -48,17 +48,12 @@
 		"react": ">=17.0.2 <=18.2.0"
 	},
 	"lint-staged": {
-		"*.{js, json}": [
+		"*.{js,json}": [
 			"prettier --write",
 			"eslint --fix"
 		],
 		"*.{js}": [
 			"npm run test-commit"
 		]
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
 	}
 }
