@@ -201,7 +201,7 @@ describe('helpers', () => {
 	describe('isBoolean helper', () => {
 		it('return false when argument is not a boolean', () => {
 			[() => false, NaN, {}, '', 'Janis', null, undefined].forEach((arg) =>
-				assert.equal(isBoolean(arg), false)
+				assert.equal(isBoolean(arg), false),
 			);
 		});
 		it('return true when argument is a boolean', () => {
@@ -221,7 +221,7 @@ describe('helpers', () => {
 	describe('isObject helper', () => {
 		it('return false when argument is not a object', () => {
 			[3, NaN, [], '', 'Janis', null, undefined].forEach((arg) =>
-				assert.equal(isObject(arg), false)
+				assert.equal(isObject(arg), false),
 			);
 		});
 		it('return true when argument is a object', () => {
@@ -232,7 +232,7 @@ describe('helpers', () => {
 	describe('isArray helper', () => {
 		it('return false when argument is not a array', () => {
 			[3, NaN, {}, '', 'Janis', null, undefined].forEach((arg) =>
-				assert.equal(isArray(arg), false)
+				assert.equal(isArray(arg), false),
 			);
 		});
 		it('return true when argument is a array', () => {
@@ -243,7 +243,7 @@ describe('helpers', () => {
 	describe('isNumber helper', () => {
 		it('return false when argument is not a number', () => {
 			[() => false, NaN, {}, '', 'Janis', null, undefined].forEach((arg) =>
-				assert.equal(isNumber(arg), false)
+				assert.equal(isNumber(arg), false),
 			);
 		});
 		it('return true when argument is a number', () => {

@@ -18,7 +18,7 @@ describe('getApiService', () => {
 		(invalidService) => {
 			const JANIS_ENV = 'testing';
 			expect(getApiService(invalidService, JANIS_ENV)).toEqual('');
-		}
+		},
 	);
 
 	it.each([undefined, null, 1, false, {}, []])(
@@ -26,6 +26,6 @@ describe('getApiService', () => {
 		(invalidEnv) => {
 			const service = 'picking';
 			expect(getApiService(service, invalidEnv)).toEqual('');
-		}
+		},
 	);
 });
