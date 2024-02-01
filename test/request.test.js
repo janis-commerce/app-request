@@ -61,6 +61,22 @@ describe('Request', () => {
 				expect(data).toEqual(apiResponse.data);
 			});
 
+			it('returns an error when the request fails', async () => {
+				const api = new Request({JANIS_ENV});
+
+				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+				getAccessToken.mockResolvedValue('exampleAccessToken');
+				axios.get.mockRejectedValue(new Error('error server'));
+
+				await expect(
+					api.get({
+						service: 'picking',
+						namespace: 'session',
+						id: '123',
+					}),
+				).rejects.toThrow('error server');
+			});
+
 			it('returns an error if request of an endpoint passed fails', async () => {
 				const api = new Request({JANIS_ENV});
 
@@ -92,6 +108,29 @@ describe('Request', () => {
 					service: 'picking',
 					namespace: 'session',
 					id: '123',
+				});
+
+				expect(data).toEqual(apiResponse.data);
+			});
+		});
+
+		describe('get by service and namespace but without id', () => {
+			it('should return data if namespace and service are valid', async () => {
+				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+				getAccessToken.mockResolvedValue('exampleAccessToken');
+				const api = new Request({JANIS_ENV});
+
+				const apiResponse = {
+					data: {
+						test: '123',
+					},
+				};
+
+				axios.get.mockResolvedValue(apiResponse);
+
+				const data = await api.get({
+					service: 'picking',
+					namespace: 'session',
 				});
 
 				expect(data).toEqual(apiResponse.data);

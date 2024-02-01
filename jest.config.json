@@ -10,7 +10,7 @@
 	"coverageReporters": ["html", "text"],
 	"coverageDirectory": "coverage",
 	"collectCoverageFrom": [
-	  "lib/**/*.{js}",
+	  "lib/**",
 	  "!**/node_modules/**",
 	  "!**/vendor/**",
 	  "!**/ios/**",
