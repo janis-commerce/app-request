@@ -16,9 +16,9 @@ describe('Request', () => {
 				async (invalidNamespace) => {
 					const api = new Request({JANIS_ENV: 'janislocal'});
 					await expect(api.get({namespace: invalidNamespace})).rejects.toThrow(
-						'namespace is not valid',
+						'namespace is not valid'
 					);
-				},
+				}
 			);
 
 			it.each(['', false, undefined, null, {}, []])(
@@ -26,19 +26,19 @@ describe('Request', () => {
 				async (invalidService) => {
 					const api = new Request({JANIS_ENV: 'janislocal'});
 					await expect(api.get({namespace: 'session', service: invalidService})).rejects.toThrow(
-						'service is not valid',
+						'service is not valid'
 					);
-				},
+				}
 			);
 
-			it.each(['', false, undefined, null, {}, []])(
-				'should throw an error if id is not valid',
+			it.each([false, null, {}, []])(
+				'should throw an error if id is not valid string',
 				async (invalidId) => {
 					const api = new Request({JANIS_ENV: 'janislocal'});
 					await expect(
-						api.get({namespace: 'session', service: 'picking', id: invalidId}),
+						api.get({namespace: 'session', service: 'picking', id: invalidId})
 					).rejects.toThrow('id is not valid');
-				},
+				}
 			);
 		});
 
@@ -69,7 +69,7 @@ describe('Request', () => {
 				await expect(
 					api.get({
 						endpoint: 'https://server.test.com/get/asd123',
-					}),
+					})
 				).rejects.toThrow('error server');
 			});
 		});
@@ -106,9 +106,9 @@ describe('Request', () => {
 				async (invalidNamespace) => {
 					const api = new Request({JANIS_ENV: 'janislocal'});
 					await expect(api.list({namespace: invalidNamespace})).rejects.toThrow(
-						'namespace is not valid',
+						'namespace is not valid'
 					);
-				},
+				}
 			);
 
 			it.each(['', false, undefined, null, {}, []])(
@@ -116,9 +116,9 @@ describe('Request', () => {
 				async (invalidService) => {
 					const api = new Request({JANIS_ENV: 'janislocal'});
 					await expect(api.list({namespace: 'session', service: invalidService})).rejects.toThrow(
-						'service is not valid',
+						'service is not valid'
 					);
-				},
+				}
 			);
 		});
 

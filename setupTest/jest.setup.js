@@ -23,7 +23,7 @@ jest.mock('@janiscommerce/oauth-native', () => ({
 
 jest.mock('react-native-device-info', () => {
 	const RNDeviceInfo = jest.requireActual(
-		'react-native-device-info/jest/react-native-device-info-mock',
+		'react-native-device-info/jest/react-native-device-info-mock'
 	);
 	return {
 		...RNDeviceInfo,
@@ -40,5 +40,5 @@ jest.mock('@janiscommerce/app-crashlytics', () =>
 		setUserId: jest.fn(),
 		setCrashlyticsCollectionEnabled: jest.fn(),
 		isCrashlyticsCollectionEnabled: true,
-	})),
+	}))
 );

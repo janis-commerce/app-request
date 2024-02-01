@@ -5,7 +5,7 @@ describe('parseQueryParams function', () => {
 		'returns an empty string if the argument is invalid',
 		(queryParams) => {
 			expect(parseQueryParams(queryParams)).toBe('');
-		},
+		}
 	);
 
 	it('returns valid filters correctly parsed', () => {
@@ -16,7 +16,7 @@ describe('parseQueryParams function', () => {
 	it('should return multiple filters correctly', () => {
 		const queryParams = {filters: {status: ['active', 'test'], id: '123'}};
 		expect(parseQueryParams(queryParams)).toBe(
-			'?filters[status][0]=active&filters[status][1]=test&filters[id]=123&',
+			'?filters[status][0]=active&filters[status][1]=test&filters[id]=123&'
 		);
 	});
 
@@ -40,7 +40,7 @@ describe('parseQueryParams function', () => {
 			filters: {name: 'John Doe', role: 'Developer & Tester'},
 		};
 		expect(parseQueryParams(queryParams)).toBe(
-			'?filters[name]=John%20Doe&filters[role]=Developer%20%26%20Tester&',
+			'?filters[name]=John%20Doe&filters[role]=Developer%20%26%20Tester&'
 		);
 	});
 

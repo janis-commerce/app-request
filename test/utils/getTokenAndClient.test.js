@@ -43,7 +43,7 @@ describe('getTokenAndClient function', () => {
 		getAccessToken.mockRejectedValue('error getting oauthTokens from async storages');
 
 		await expect(getTokenAndClient()).rejects.toThrow(
-			'error getting oauthTokens from async storages',
+			'error getting oauthTokens from async storages'
 		);
 	});
 
