@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 1.1.2 - 2024-03-04
+
+### Fixed
+
+- Fixed error message logged at crashlytics and returned at GET / LIST catch.
+
 ### 1.1.1 - 2024-02-08
 
 ### Fixed
