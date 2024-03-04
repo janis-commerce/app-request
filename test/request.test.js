@@ -79,14 +79,15 @@ describe('Request', () => {
 
 			it('returns an error if request of an endpoint passed fails', async () => {
 				const api = new Request({JANIS_ENV});
-
-				axios.get.mockRejectedValue(new Error('error server'));
+				const error = new Error('error server');
+				error.response = {data: {message: 'server is disconnected'}};
+				axios.get.mockRejectedValue(error);
 
 				await expect(
 					api.get({
 						endpoint: 'https://server.test.com/get/asd123',
 					}),
-				).rejects.toThrow('error server');
+				).rejects.toThrow('server is disconnected');
 			});
 		});
 
@@ -159,6 +160,25 @@ describe('Request', () => {
 					);
 				},
 			);
+		});
+
+		describe('list error request', () => {
+			it('returns an error if request of an endpoint passed fails', async () => {
+				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+				getAccessToken.mockResolvedValue('exampleAccessToken');
+				const api = new Request({JANIS_ENV});
+
+				const error = new Error('error server');
+				error.response = {data: {message: 'server is disconnected'}};
+				axios.get.mockRejectedValue(error);
+
+				await expect(
+					api.list({
+						service: 'picking',
+						namespace: 'session',
+					}),
+				).rejects.toThrow('server is disconnected');
+			});
 		});
 
 		describe('list by service and namespace', () => {
