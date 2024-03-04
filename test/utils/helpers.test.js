@@ -7,6 +7,8 @@ import {
 	isArray,
 	isNumber,
 	promiseWrapper,
+	URLMaker,
+	parsePathParams,
 } from '../../lib/utils/helpers.js';
 
 describe('helpers', () => {
@@ -260,6 +262,47 @@ describe('helpers', () => {
 		it('return data when function is resolved', async () => {
 			const prom = await promiseWrapper(Promise.resolve({client: 'Janis'}));
 			await assert.deepEqual(prom, [{client: 'Janis'}, null]);
+		});
+	});
+
+	describe('parsePathParams helper', () => {
+		it('return empty string when not receive a valid array as argument', () => {
+			const invalidArg = ['', 3, [], null];
+
+			invalidArg.forEach((argument) => {
+				const response = parsePathParams(argument);
+				expect(response).toStrictEqual('');
+			});
+		});
+
+		it('return a formatted pathParams when receive a valid array as argument', () => {
+			const response = parsePathParams(['sprint', 3, '1234', 'movement']);
+
+			expect(response).toStrictEqual('sprint/1234/movement');
+		});
+	});
+
+	describe('URLMaker helper', () => {
+		const validParams = {
+			service: 'delivery',
+			environment: 'janisdev',
+			namespace: 'route',
+			pathParams: 'routeId/driver/driverId',
+			action: 'finish',
+			id: '123456789',
+		};
+		it('returns empty string if not receive valid params', () => {
+			const response = URLMaker({});
+
+			expect(response).toStrictEqual('');
+		});
+
+		it('return parsed url when receive an object with valid strings argument', () => {
+			const response = URLMaker(validParams);
+
+			expect(response).toStrictEqual(
+				'https://delivery.janisdev.in/api/route/routeId/driver/driverId/123456789/finish',
+			);
 		});
 	});
 });
