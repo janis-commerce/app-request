@@ -304,5 +304,13 @@ describe('helpers', () => {
 				'https://delivery.janisdev.in/api/route/routeId/driver/driverId/123456789/finish',
 			);
 		});
+
+		it('return parsed url when receive an object with valid strings argument, and valid queryParams', () => {
+			const response = URLMaker({...validParams, queryParams: '?filters[id]=123&'});
+
+			expect(response).toStrictEqual(
+				'https://delivery.janisdev.in/api/route/routeId/driver/driverId/123456789/finish?filters[id]=123&',
+			);
+		});
 	});
 });
