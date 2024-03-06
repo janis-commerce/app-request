@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 1.2.0 - 2024-03-06
+
+### Added
+
+- Added POST, PUT and PATCH methods with their own crashlytics log
+
 ### 1.1.2 - 2024-03-04
 
 ### Fixed
