@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 1.2.1 - 2024-03-14
+
+### Fixed
+
+- Fixed an error with headers when using get method with a custom endpoint
+
 ### 1.2.0 - 2024-03-06
 
 ### Added
