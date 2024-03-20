@@ -29,7 +29,7 @@ jobs:
       - run: npm i -f
         env:
           NPM_TOKEN: ${{ secrets.npm_token }}
-      - run: npm publish --access private
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
