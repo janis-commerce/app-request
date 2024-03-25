@@ -14,23 +14,33 @@ describe('parseQueryParams function', () => {
 	});
 
 	it('should return multiple filters correctly', () => {
-		const queryParams = {filters: {status: ['active', 'test'], id: '123'}};
+		const queryParams = {filters: {status: ['active', 'test'], id: '123'}, sort: {}};
 		expect(parseQueryParams(queryParams)).toBe(
 			'?filters[status][0]=active&filters[status][1]=test&filters[id]=123&',
 		);
 	});
 
 	it('should return sorting criteria correctly', () => {
-		const queryParams = {sort: 'prioritizeManualAssignment'};
+		const queryParams = {sort: {sortBy: 'prioritizeManualAssignment'}};
 		expect(parseQueryParams(queryParams)).toBe('?sortBy=prioritizeManualAssignment');
 	});
 
 	it('returns both filters and sorting criteria correctly', () => {
-		const queryParams = {filters: {status: 'active'}, sort: 'createdAt'};
+		const queryParams = {filters: {status: 'active'}, sort: {sortBy: 'createdAt'}};
 		expect(parseQueryParams(queryParams)).toBe('?filters[status]=active&sortBy=createdAt');
 	});
 
-	it('returns an empty sort string if sort is not a valid string', () => {
+	it('returns both filters and sorting criteria correctly', () => {
+		const queryParams = {
+			filters: {status: 'active'},
+			sort: {sortBy: 'createdAt', sortDirection: 'asc'},
+		};
+		expect(parseQueryParams(queryParams)).toBe(
+			'?filters[status]=active&sortBy=createdAt&sortDirection=asc',
+		);
+	});
+
+	it('returns an empty sort string if sort is not a valid object', () => {
 		const queryParams = {sort: ['status:asc', 'createdAt:desc']};
 		expect(parseQueryParams(queryParams)).toBe('');
 	});
@@ -45,7 +55,7 @@ describe('parseQueryParams function', () => {
 	});
 
 	it('returns both filters and sorting criteria correctly with empty values', () => {
-		const queryParams = {filters: {status: '', id: '123'}, sort: ''};
+		const queryParams = {filters: {status: '', id: '123'}, sort: {sortBy: ''}};
 		expect(parseQueryParams(queryParams)).toBe('?filters[id]=123&');
 	});
 });

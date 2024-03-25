@@ -62,6 +62,30 @@ describe('makeRequest function that return a new promise:', () => {
 		expect(result.statusText).toBeUndefined();
 	});
 
+	it('prop data can be array', async () => {
+		nock('https://sample-service.janis-test.in')
+			.post('/api/sample-entity')
+			.reply(200, mockMsResponse, headersResponse);
+
+		axios.mockResolvedValueOnce({
+			headers: {headersResponse},
+			status: 200,
+			data: {id: '1234'},
+		});
+
+		const result = await makeRequest({
+			httpVerb: 'POST',
+			url: 'https://sample-service.janis-test.in/api/sample-entity',
+			headers: {Authorization: 'Bearer token'},
+			crashConfig: {method: 'POST', service: 'example', namespace: 'test'},
+			data: [{id: '1234', email: 'janis@janis.im'}],
+		});
+
+		expect(result.result).toEqual({id: '1234'});
+		expect(result.statusCode).toEqual(200);
+		expect(result.statusText).toBeUndefined();
+	});
+
 	it('should reject with error when request fails', async () => {
 		nock('https://sample-service.janis-test.in')
 			.get('/api/sample-entity/1234')

@@ -29,202 +29,209 @@ describe('Request', () => {
 		jest.clearAllMocks();
 	});
 	describe('get', () => {
-		describe('params errors validations', () => {
-			it.each(['', false, undefined, null, {}, []])(
-				'should throw an error if namespace is not valid',
-				async (invalidNamespace) => {
-					const api = new Request({JANIS_ENV: 'janislocal'});
-					await expect(api.get({namespace: invalidNamespace})).rejects.toThrow(
-						'namespace is not valid',
-					);
+		it('make a request with httpVerb GET based on URL parameters', async () => {
+			const mockMsResponse = {
+				data: {
+					test: '123',
 				},
-			);
+			};
 
-			it.each(['', false, undefined, null, {}, []])(
-				'should throw an error if service is not valid',
-				async (invalidService) => {
-					const api = new Request({JANIS_ENV: 'janislocal'});
-					await expect(api.get({namespace: 'session', service: invalidService})).rejects.toThrow(
-						'service is not valid',
-					);
+			const headersResponse = {
+				'content-type': 'application/json',
+			};
+
+			getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+			getAccessToken.mockResolvedValue('exampleAccessToken');
+
+			nock('https://picking.janislocal.in/api/session/asd123')
+				.get('/api/session/asd123')
+				.reply(200, mockMsResponse);
+
+			axios.mockResolvedValueOnce({
+				headers: headersResponse,
+				status: 200,
+				data: mockMsResponse,
+				statusText: 'successfully response',
+			});
+			const api = new Request({JANIS_ENV});
+
+			await api.get({
+				namespace: 'picking',
+				service: 'sample-service',
+				id: '1234',
+				pathParams: ['product', '5678'],
+				action: 'receive',
+				headers: {
+					page: 1,
 				},
-			);
-
-			it.each([false, null, {}, []])(
-				'should throw an error if id is not valid string',
-				async (invalidId) => {
-					const api = new Request({JANIS_ENV: 'janislocal'});
-					await expect(
-						api.get({namespace: 'session', service: 'picking', id: invalidId}),
-					).rejects.toThrow('id is not valid');
+				extraConfigs: {
+					timeout: 1000,
 				},
-			);
-		});
-
-		describe('getByEndpoint', () => {
-			it('does request and returns data when endpoint param is passed', async () => {
-				const api = new Request({JANIS_ENV});
-
-				const apiResponse = {
-					data: {
-						test: '123',
-					},
-				};
-
-				axios.get.mockResolvedValue(apiResponse);
-
-				const data = await api.get({
-					endpoint: 'https://picking.janislocal.in/api/session/asd123',
-				});
-
-				expect(data).toEqual(apiResponse.data);
 			});
 
-			it('returns an error when the request fails', async () => {
-				const api = new Request({JANIS_ENV});
-
-				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
-				getAccessToken.mockResolvedValue('exampleAccessToken');
-				axios.get.mockRejectedValue(new Error('error server'));
-
-				await expect(
-					api.get({
-						service: 'picking',
-						namespace: 'session',
-						id: '123',
-					}),
-				).rejects.toThrow('error server');
-			});
-
-			it('returns an error if request of an endpoint passed fails', async () => {
-				const api = new Request({JANIS_ENV});
-				const error = new Error('error server');
-				error.response = {data: {message: 'server is disconnected'}};
-				axios.get.mockRejectedValue(error);
-
-				await expect(
-					api.get({
-						endpoint: 'https://server.test.com/get/asd123',
-					}),
-				).rejects.toThrow('server is disconnected');
+			expect(makeRequestSpy).toHaveBeenCalled();
+			expect(makeRequestSpy).toHaveBeenCalledWith({
+				url: 'https://sample-service.janislocal.in/api/picking/product/5678/1234/receive',
+				data: undefined,
+				httpVerb: 'get',
+				crashConfig: {
+					method: 'GET',
+					service: 'sample-service',
+					namespace: 'picking',
+					id: '1234',
+				},
+				headers: {...headers, 'x-janis-page': 1},
+				extendedConfig: {
+					timeout: 1000,
+				},
 			});
 		});
 
-		describe('get by service, namespace and id', () => {
-			it('should return data if namespace and service are valid', async () => {
-				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
-				getAccessToken.mockResolvedValue('exampleAccessToken');
-				const api = new Request({JANIS_ENV});
+		it('make a request with httpVerb GET based in an endpoint', async () => {
+			const mockMsResponse = {
+				data: {
+					test: '123',
+				},
+			};
 
-				const apiResponse = {
-					data: {
-						test: '123',
-					},
-				};
+			const headersResponse = {
+				'content-type': 'application/json',
+			};
 
-				axios.get.mockResolvedValue(apiResponse);
+			getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+			getAccessToken.mockResolvedValue('exampleAccessToken');
 
-				const data = await api.get({
-					service: 'picking',
-					namespace: 'session',
-					id: '123',
-				});
+			nock('https://picking.janislocal.in/api/session/asd123')
+				.get('/api/session/asd123')
+				.reply(200, mockMsResponse);
 
-				expect(data).toEqual(apiResponse.data);
+			axios.mockResolvedValueOnce({
+				headers: headersResponse,
+				status: 200,
+				data: mockMsResponse,
+				statusText: 'successfully response',
 			});
-		});
+			const api = new Request({JANIS_ENV});
 
-		describe('get by service and namespace but without id', () => {
-			it('should return data if namespace and service are valid', async () => {
-				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
-				getAccessToken.mockResolvedValue('exampleAccessToken');
-				const api = new Request({JANIS_ENV});
+			await api.get({
+				endpoint: 'https://picking.janislocal.in/api/session/asd123',
+			});
 
-				const apiResponse = {
-					data: {
-						test: '123',
-					},
-				};
-
-				axios.get.mockResolvedValue(apiResponse);
-
-				const data = await api.get({
-					service: 'picking',
-					namespace: 'session',
-				});
-
-				expect(data).toEqual(apiResponse.data);
+			expect(makeRequestSpy).toHaveBeenCalled();
+			expect(makeRequestSpy).toHaveBeenCalledWith({
+				url: 'https://picking.janislocal.in/api/session/asd123',
+				data: undefined,
+				httpVerb: 'get',
+				crashConfig: {
+					method: 'GET',
+				},
+				headers: headers,
+				extendedConfig: {},
 			});
 		});
 	});
 
 	describe('list', () => {
-		describe('params errors validations', () => {
-			it.each(['', false, undefined, null, {}, []])(
-				'should throw an error if namespace is not valid',
-				async (invalidNamespace) => {
-					const api = new Request({JANIS_ENV: 'janislocal'});
-					await expect(api.list({namespace: invalidNamespace})).rejects.toThrow(
-						'namespace is not valid',
-					);
+		it('make a request with httpVerb GET method LIST based on URL parameters', async () => {
+			const mockMsResponse = {
+				data: [
+					{
+						test: '123',
+					},
+				],
+			};
+
+			const headersResponse = {
+				'content-type': 'application/json',
+			};
+
+			getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+			getAccessToken.mockResolvedValue('exampleAccessToken');
+
+			nock('https://picking.janislocal.in/api/session/asd123')
+				.get('/api/session/asd123')
+				.reply(200, mockMsResponse);
+
+			axios.mockResolvedValueOnce({
+				headers: headersResponse,
+				status: 200,
+				data: mockMsResponse,
+				statusText: 'successfully response',
+			});
+			const api = new Request({JANIS_ENV});
+
+			await api.list({
+				namespace: 'picking',
+				service: 'sample-service',
+				pathParams: ['product', '5678'],
+				action: 'receive',
+				headers: {
+					page: 1,
 				},
-			);
-
-			it.each(['', false, undefined, null, {}, []])(
-				'should throw an error if service is not valid',
-				async (invalidService) => {
-					const api = new Request({JANIS_ENV: 'janislocal'});
-					await expect(api.list({namespace: 'session', service: invalidService})).rejects.toThrow(
-						'service is not valid',
-					);
+				extraConfigs: {
+					timeout: 1000,
 				},
-			);
-		});
+			});
 
-		describe('list error request', () => {
-			it('returns an error if request of an endpoint passed fails', async () => {
-				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
-				getAccessToken.mockResolvedValue('exampleAccessToken');
-				const api = new Request({JANIS_ENV});
-
-				const error = new Error('error server');
-				error.response = {data: {message: 'server is disconnected'}};
-				axios.get.mockRejectedValue(error);
-
-				await expect(
-					api.list({
-						service: 'picking',
-						namespace: 'session',
-					}),
-				).rejects.toThrow('server is disconnected');
+			expect(makeRequestSpy).toHaveBeenCalled();
+			expect(makeRequestSpy).toHaveBeenCalledWith({
+				url: 'https://sample-service.janislocal.in/api/picking/product/5678/receive',
+				data: undefined,
+				httpVerb: 'get',
+				crashConfig: {
+					method: 'LIST',
+					service: 'sample-service',
+					namespace: 'picking',
+				},
+				headers: {...headers, 'x-janis-page': 1, 'x-janis-page-size': 60},
+				extendedConfig: {
+					timeout: 1000,
+				},
 			});
 		});
 
-		describe('list by service and namespace', () => {
-			it('should return data if namespace and service are valid', async () => {
-				getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
-				getAccessToken.mockResolvedValue('exampleAccessToken');
-				const api = new Request({JANIS_ENV});
-
-				const apiResponse = {
-					data: ['123', '456', '789'],
-					headers: {
-						'x-janis-total': 20,
+		it('make a request with httpVerb GET method LIST based in an endpoint', async () => {
+			const mockMsResponse = {
+				data: [
+					{
+						test: '123',
 					},
-				};
+				],
+			};
 
-				axios.get.mockResolvedValue(apiResponse);
+			const headersResponse = {
+				'content-type': 'application/json',
+			};
 
-				const data = await api.list({
-					service: 'picking',
-					namespace: 'session',
-				});
+			getUserInfo.mockResolvedValue({tcode: 'exampleClient'});
+			getAccessToken.mockResolvedValue('exampleAccessToken');
 
-				expect(data).toEqual({
-					result: apiResponse.data,
-					isLastPage: true,
-					total: 20,
-				});
+			nock('https://picking.janislocal.in/api/session/asd123')
+				.get('/api/session/asd123')
+				.reply(200, mockMsResponse);
+
+			axios.mockResolvedValueOnce({
+				headers: headersResponse,
+				status: 200,
+				data: mockMsResponse,
+				statusText: 'successfully response',
+			});
+			const api = new Request({JANIS_ENV});
+
+			await api.list({
+				endpoint: 'https://picking.janislocal.in/api/session/asd123',
+			});
+
+			expect(makeRequestSpy).toHaveBeenCalled();
+			expect(makeRequestSpy).toHaveBeenCalledWith({
+				url: 'https://picking.janislocal.in/api/session/asd123',
+				data: undefined,
+				httpVerb: 'get',
+				crashConfig: {
+					method: 'LIST',
+				},
+				headers: {...headers, 'x-janis-page': 1, 'x-janis-page-size': 60},
+				extendedConfig: {},
 			});
 		});
 	});
