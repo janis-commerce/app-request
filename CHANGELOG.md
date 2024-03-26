@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 2.0.0 - 2024-04-03
+
+### Breaking Changes
+
+### Changed
+
+- Changed response of get method, now every method returns the same structure - [APPSRN-283](https://janiscommerce.atlassian.net/browse/APPSRN-283)
+
+### Fixed
+
+- Fixed use of sort params
+
 ### 1.2.1 - 2024-03-14
 
 ### Fixed
