@@ -1,4 +1,5 @@
 import axios from 'axios';
+import RNFS from 'react-native-fs';
 import {getUserInfo, getAccessToken} from '@janiscommerce/oauth-native';
 import Request from '../lib/request.js';
 import {promiseWrapper} from '../lib/utils/helpers.js';
@@ -6,6 +7,7 @@ import * as makeRequest from '../lib/utils/makeRequest.js';
 import nock from 'nock';
 
 jest.mock('axios');
+
 const makeRequestSpy = jest.spyOn(makeRequest, 'default');
 const headers = {
 	'content-Type': 'application/json',
@@ -611,6 +613,122 @@ describe('Request', () => {
 					expect(message).toBe(`id ${invalidId} is invalid type: ${idType}`);
 				},
 			);
+		});
+	});
+
+	describe('downloadFile', () => {
+		it.each(['', false, undefined, null, {}, [], 5, () => {}])(
+			'should throw an error if fileName, folderPath or url is not valid',
+			async (invalidParam) => {
+				const request = new Request({JANIS_ENV});
+				const url = 'validUrl';
+				const fileName = 'validFileName';
+				const folderPath = 'validFolderPath';
+
+				const [, urlResponse] = await promiseWrapper(
+					request.downloadFile({
+						url: invalidParam,
+						fileName,
+						folderPath,
+					}),
+				);
+
+				const [, nameResponse] = await promiseWrapper(
+					request.downloadFile({
+						url,
+						fileName: invalidParam,
+						folderPath,
+					}),
+				);
+
+				const [, folderResponse] = await promiseWrapper(
+					request.downloadFile({
+						url,
+						fileName,
+						folderPath: invalidParam,
+					}),
+				);
+
+				const urlMessage = urlResponse.result.message;
+				const nameMessage = nameResponse.result.message;
+				const folderMessage = folderResponse.result.message;
+
+				expect(urlMessage).toBe('url is not valid');
+				expect(nameMessage).toBe('fileName is not valid');
+				expect(folderMessage).toBe('folderPath is not valid');
+			},
+		);
+		it('should throw an error if the download fails', async () => {
+			const request = new Request({JANIS_ENV});
+			const url = 'validUrl';
+			const fileName = 'validFileName';
+			const folderPath = 'validFolderPath';
+			RNFS.downloadFile.mockReturnValueOnce({promise: Promise.reject(new Error('custom error'))});
+
+			const [, ErrorDownload] = await promiseWrapper(
+				request.downloadFile({
+					url,
+					fileName,
+					folderPath,
+				}),
+			);
+
+			expect(ErrorDownload.result.message).toBe('custom error');
+		});
+
+		it('should throw an error if the download is not completed', async () => {
+			const request = new Request({JANIS_ENV});
+			const url = 'validUrl';
+			const fileName = 'validFileName';
+			const folderPath = 'validFolderPath';
+			const result = {
+				jobId: 123456,
+				statusCode: 200,
+				bytesWritten: 0,
+			};
+			RNFS.downloadFile.mockReturnValueOnce({
+				promise: Promise.resolve(result),
+			});
+
+			const [, ErrorDownload] = await promiseWrapper(
+				request.downloadFile({
+					url,
+					fileName,
+					folderPath,
+					headers: {},
+					begin: () => {},
+					progress: () => {},
+					progressInterval: 100,
+					progressDivider: 10,
+				}),
+			);
+
+			expect(ErrorDownload.result.message).toBe('The file download did not complete');
+		});
+
+		it('the download completes successfully', async () => {
+			const request = new Request({JANIS_ENV});
+			const url = 'validUrl';
+			const fileName = 'validFileName';
+			const folderPath = 'validFolderPath';
+			const result = {
+				jobId: 123456,
+				statusCode: 200,
+				bytesWritten: 5000,
+			};
+			RNFS.downloadFile.mockReturnValueOnce({
+				promise: Promise.resolve(result),
+			});
+
+			const [resolve] = await promiseWrapper(
+				request.downloadFile({
+					url,
+					fileName,
+					folderPath,
+				}),
+			);
+
+			expect(resolve.result).toBe(result);
 		});
 	});
 });
