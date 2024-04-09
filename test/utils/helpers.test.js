@@ -6,6 +6,7 @@ import {
 	isObject,
 	isArray,
 	isNumber,
+	isFunction,
 	promiseWrapper,
 	URLMaker,
 	parsePathParams,
@@ -250,6 +251,20 @@ describe('helpers', () => {
 		});
 		it('return true when argument is a number', () => {
 			assert.equal(isNumber(7), true);
+		});
+	});
+
+	describe('isFunction helper', () => {
+		it('return false when argument is not a function', () => {
+			[false, NaN, {}, '', 'Janis', null, undefined].forEach((arg) =>
+				assert.equal(isFunction(arg), false),
+			);
+		});
+		it('return true when argument is a function', () => {
+			assert.equal(
+				isFunction(() => {}),
+				true,
+			);
 		});
 	});
 
