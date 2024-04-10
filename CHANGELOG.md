@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### Added
+
+- Added more data in the errors registered in crashlytics - [APPSRN-294](https://janiscommerce.atlassian.net/browse/APPSRN-294)
+
 ### 2.0.0 - 2024-04-03
 
 ### Breaking Changes
