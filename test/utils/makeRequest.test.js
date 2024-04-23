@@ -139,4 +139,51 @@ describe('makeRequest function that return a new promise:', () => {
 			statusText: 'unauthorized token',
 		});
 	});
+
+	it('should reject with error.message when error.response is undefined and error.request is truthy', async () => {
+		nock('https://sample-service.janis-test.in')
+			.get('/api/sample-entity/1234')
+			.reply(403, mockMsResponse, headersResponse);
+
+		axios.mockRejectedValueOnce({
+			message: 'Request was made but no response was received',
+			request: {data: 123},
+		});
+
+		crashlytics.recordError = jest.fn();
+
+		await expect(
+			makeRequest({
+				httpVerb: 'GET',
+				url: 'https://sample-service.janis-test.in/api/sample-entity/1234',
+				headers: {Authorization: 'Bearer token'},
+				crashConfig: {method: 'GET', service: 'example', namespace: 'test', id: '1234'},
+			}),
+		).rejects.toEqual({
+			result: {message: 'Request was made but no response was received'},
+		});
+	});
+
+	it('should reject with error.message when error.response and error.request are undefined', async () => {
+		nock('https://sample-service.janis-test.in')
+			.get('/api/sample-entity/1234')
+			.reply(403, mockMsResponse, headersResponse);
+
+		axios.mockRejectedValueOnce({
+			message: 'Network Error',
+		});
+
+		crashlytics.recordError = jest.fn();
+
+		await expect(
+			makeRequest({
+				httpVerb: 'GET',
+				url: 'https://sample-service.janis-test.in/api/sample-entity/1234',
+				headers: {Authorization: 'Bearer token'},
+				crashConfig: {method: 'GET', service: 'example', namespace: 'test', id: '1234'},
+			}),
+		).rejects.toEqual({
+			result: {message: 'Network Error'},
+		});
+	});
 });
