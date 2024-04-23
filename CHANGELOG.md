@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 2.1.0 - 2024-04-23
+
+### Fixed
+
+- Fixed error handling at makeRequest.
 
 ### 2.1.0 - 2024-04-10
+
 ### Added
 
 - Added more data in the errors registered in crashlytics - [APPSRN-294](https://janiscommerce.atlassian.net/browse/APPSRN-294)
