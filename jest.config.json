@@ -10,23 +10,24 @@
 	"coverageReporters": ["html", "text"],
 	"coverageDirectory": "coverage",
 	"collectCoverageFrom": [
-	  "lib/**",
-	  "!**/node_modules/**",
-	  "!**/vendor/**",
-	  "!**/ios/**",
-	  "!**/android/**",
-	  "!**/env/**",
-	  "!<rootDir>/index.js",
-	  "!<rootDir>/coverage",
-	  "!**/jestMocks/**"
+		"lib/**",
+		"!lib/utils/**",
+		"!**/node_modules/**",
+		"!**/vendor/**",
+		"!**/ios/**",
+		"!**/android/**",
+		"!**/env/**",
+		"!<rootDir>/index.js",
+		"!<rootDir>/coverage",
+		"!**/jestMocks/**"
 	],
 	"coveragePathIgnorePatterns": ["/node_modules/", "<rootDir>/index.js"],
 	"coverageThreshold": {
-	  "global": {
-		"branches": 100,
-		"functions": 100,
-		"lines": 100,
-		"statements": 100
-	  }
+		"global": {
+			"branches": 100,
+			"functions": 100,
+			"lines": 100,
+			"statements": 100
+		}
 	}
-  }
+}

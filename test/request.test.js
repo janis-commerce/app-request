@@ -1,12 +1,26 @@
-import axios from 'axios';
 import {getUserInfo, getAccessToken} from '@janiscommerce/oauth-native';
 import Request from '../lib/request.js';
 import {promiseWrapper} from '../lib/utils/helpers.js';
 import * as makeRequest from '../lib/utils/makeRequest.js';
+import * as axiosInstance from '../lib/utils/axiosInstance.js';
 import nock from 'nock';
 
-jest.mock('axios');
+// jest.mock('axiosInstance', () => {
+// 	return {
+// 		create: () => {
+// 			return {
+// 				interceptors: {
+// 					request: {eject: jest.fn(), use: jest.fn()},
+// 					response: {eject: jest.fn(), use: jest.fn()},
+// 				},
+// 			};
+// 		},
+// 	};
+// });
+
 const makeRequestSpy = jest.spyOn(makeRequest, 'default');
+const axiosInstanceMock = jest.spyOn(axiosInstance, 'default');
+
 const headers = {
 	'content-Type': 'application/json',
 	'janis-api-key': 'Bearer',
@@ -47,7 +61,7 @@ describe('Request', () => {
 				.get('/api/session/asd123')
 				.reply(200, mockMsResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -105,7 +119,7 @@ describe('Request', () => {
 				.get('/api/session/asd123')
 				.reply(200, mockMsResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -152,7 +166,7 @@ describe('Request', () => {
 				.get('/api/session/asd123')
 				.reply(200, mockMsResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -210,7 +224,7 @@ describe('Request', () => {
 				.get('/api/session/asd123')
 				.reply(200, mockMsResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -253,7 +267,7 @@ describe('Request', () => {
 				.post('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -317,7 +331,7 @@ describe('Request', () => {
 				.post('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -361,7 +375,7 @@ describe('Request', () => {
 				.put('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -425,7 +439,7 @@ describe('Request', () => {
 				.put('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -469,7 +483,7 @@ describe('Request', () => {
 				.patch('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,
@@ -533,7 +547,7 @@ describe('Request', () => {
 				.patch('/api/sample-entity')
 				.reply(200, mockMsResponse, headersResponse);
 
-			axios.mockResolvedValueOnce({
+			axiosInstanceMock.mockResolvedValueOnce({
 				headers: headersResponse,
 				status: 200,
 				data: mockMsResponse,

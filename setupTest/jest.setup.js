@@ -42,3 +42,9 @@ jest.mock('@janiscommerce/app-crashlytics', () =>
 		isCrashlyticsCollectionEnabled: true,
 	})),
 );
+
+jest.mock('@janiscommerce/app-analytics', () =>
+	jest.fn().mockImplementation(() => ({
+		sendCustomEvent: jest.fn(),
+	})),
+);

@@ -25,6 +25,7 @@
 		"validate:code": "npm run lint -- --fix  && jest --collectCoverage"
 	},
 	"dependencies": {
+		"@janiscommerce/app-analytics": "^2.3.0",
 		"@janiscommerce/app-crashlytics": "^2.1.0",
 		"@janiscommerce/oauth-native": "^1.4.0",
 		"axios": "^1.6.3"
