@@ -5,19 +5,6 @@ import * as makeRequest from '../lib/utils/makeRequest.js';
 import * as axiosInstance from '../lib/utils/axiosInstance.js';
 import nock from 'nock';
 
-// jest.mock('axiosInstance', () => {
-// 	return {
-// 		create: () => {
-// 			return {
-// 				interceptors: {
-// 					request: {eject: jest.fn(), use: jest.fn()},
-// 					response: {eject: jest.fn(), use: jest.fn()},
-// 				},
-// 			};
-// 		},
-// 	};
-// });
-
 const makeRequestSpy = jest.spyOn(makeRequest, 'default');
 const axiosInstanceMock = jest.spyOn(axiosInstance, 'default');
 
