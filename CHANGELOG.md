@@ -7,27 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
-### 2.3.0-beta.3 - 2024-08-31
+### 2.3.0 - 2024-09-23
 
 ### Added
 
+- interceptor to log info in analytics
 - add substring method to avoid error length limit in analytics
-
-### Changed
-
-- param name from endpoint to params
-
-### 2.3.0-beta.2 - 2024-08-26
-
-### Added
-
-- interceptor to log info in analytics
-
-### 2.3.0-beta.1 - 2024-08-06
-
-### Added
-
-- interceptor to log info in analytics
 
 ### 2.2.0 - 2024-04-23
 
