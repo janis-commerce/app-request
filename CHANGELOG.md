@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 2.4.1 - 2024-10-03
+
+### Fixed
+
+- Fixed parse query params to support objects. 
+
 ### 2.4.0 - 2024-09-30
 
 ### Changed
