@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 2.4.4 - 2025-01-02
+
+### Fixed
+
+- An error with an object validation - [APPSRN-355](https://janiscommerce.atlassian.net/browse/APPSRN-355)
+
+### 2.4.3 - 2024-12-11
+
+### Fixed
+
+- params code_status and response_time from measurement_request
+
 ### 2.4.2 - 2024-11-04
 
 ### Fixed
@@ -17,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed parse query params to support objects. 
+- Fixed parse query params to support objects.
 
 ### 2.4.0 - 2024-09-30
 
