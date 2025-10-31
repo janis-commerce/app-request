@@ -48,3 +48,14 @@ jest.mock('@janiscommerce/app-analytics', () =>
 		sendCustomEvent: jest.fn(),
 	})),
 );
+
+jest.mock('@janiscommerce/app-device-info', () => ({
+	getApplicationName: jest.fn(() => 'unknown'),
+	getBuildNumber: jest.fn(() => 'unknown'),
+	getVersion: jest.fn(() => 'unknown'),
+	getBundleId: jest.fn(() => 'unknown'),
+	getSystemName: jest.fn(() => 'unknown'),
+	getSystemVersion: jest.fn(() => 'unknown'),
+	getUniqueId: jest.fn(() => ''),
+	getModel: jest.fn(() => 'unknown'),
+}));
