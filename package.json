@@ -1,6 +1,6 @@
 {
 	"name": "@janiscommerce/app-request",
-	"version": "2.6.0",
+	"version": "2.7.0",
 	"description": "Module to do requests at janis apps",
 	"main": "lib/index.js",
 	"author": "Janis Commerce",
@@ -40,16 +40,16 @@
 		"jest": "^29.7.0",
 		"nock": "^13.4.0",
 		"prettier": "3.2.4",
+		"@janiscommerce/app-device-info": "^1.2.0",
 		"@janiscommerce/app-analytics": "^2.4.0",
 		"@janiscommerce/app-crashlytics": "^2.1.0",
-		"@janiscommerce/app-device-info": "^1.1.0",
 		"@janiscommerce/oauth-native": "^1.5.0"
 	},
 	"peerDependencies": {
 		"react": ">=17.0.2",
+		"@janiscommerce/app-device-info": "^1.2.0",
 		"@janiscommerce/app-analytics": "^2.4.0",
 		"@janiscommerce/app-crashlytics": "^2.1.0",
-		"@janiscommerce/app-device-info": "^1.1.0",
 		"@janiscommerce/oauth-native": "^1.5.0"
 	}
 }

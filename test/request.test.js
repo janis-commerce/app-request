@@ -54,6 +54,12 @@ describe('Request', () => {
 			expect(api.JANIS_ENV).toBe('janisqa');
 		});
 
+		it('returns null when bundle id is not a Janis app', () => {
+			getBundleId.mockReturnValueOnce('com.instaleap.app');
+			const api = new Request();
+			expect(api.JANIS_ENV).toBeNull();
+		});
+
 		it('respects explicit JANIS_ENV when provided', () => {
 			const api = new Request({JANIS_ENV: 'janisqa'});
 			expect(api.JANIS_ENV).toBe('janisqa');
