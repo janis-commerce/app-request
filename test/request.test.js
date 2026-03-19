@@ -1,4 +1,5 @@
 import {getUserInfo, getAccessToken} from '@janiscommerce/oauth-native';
+import {getBundleId} from '@janiscommerce/app-device-info';
 import Request from '../lib/request.js';
 import {promiseWrapper} from '../lib/utils/helpers.js';
 import * as makeRequest from '../lib/utils/makeRequest.js';
@@ -11,14 +12,14 @@ const axiosInstanceMock = jest.spyOn(axiosInstance, 'default');
 const headers = {
 	'content-Type': 'application/json',
 	'janis-api-key': 'Bearer',
-	'user-agent':
-		'unknown/unknown (unknown; unknown) unknown/unknown (unknown janis-app-device-id; unknown)',
+	'user-agent': 'in.janis.picking/unknown (unknown; unknown) unknown/unknown (unknown; unknown)',
 	'janis-app-name': 'unknown',
 	'janis-app-build': 'unknown',
 	'janis-app-version': 'unknown',
-	'janis-app-package-name': 'unknown',
+	'janis-app-package-name': 'in.janis.picking',
 	'janis-app-device-os-name': 'unknown',
 	'janis-app-device-os-version': 'unknown',
+	'janis-app-device-id': 'unknown',
 	'janis-app-device-name': 'unknown',
 	'janis-client': 'exampleClient',
 	'janis-api-secret': 'exampleAccessToken',
@@ -29,6 +30,36 @@ describe('Request', () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
+
+	describe('constructor auto-detection', () => {
+		it('defaults to "janis" when app name has no match', () => {
+			const api = new Request();
+			expect(api.JANIS_ENV).toBe('janis');
+		});
+
+		it('defaults to "janis" when empty object passed', () => {
+			const api = new Request({});
+			expect(api.JANIS_ENV).toBe('janis');
+		});
+
+		it('detects "janisdev" when bundle id ends with ".beta"', () => {
+			getBundleId.mockReturnValueOnce('in.janis.picking.beta');
+			const api = new Request();
+			expect(api.JANIS_ENV).toBe('janisdev');
+		});
+
+		it('detects "janisqa" when bundle id ends with ".qa"', () => {
+			getBundleId.mockReturnValueOnce('in.janis.picking.qa');
+			const api = new Request();
+			expect(api.JANIS_ENV).toBe('janisqa');
+		});
+
+		it('respects explicit JANIS_ENV when provided', () => {
+			const api = new Request({JANIS_ENV: 'janisqa'});
+			expect(api.JANIS_ENV).toBe('janisqa');
+		});
+	});
+
 	describe('get', () => {
 		it('make a request with httpVerb GET based on URL parameters', async () => {
 			const mockMsResponse = {

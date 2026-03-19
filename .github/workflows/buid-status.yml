@@ -9,19 +9,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 22.x
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 22.x
     - run: npm i -f
       env:
         NPM_TOKEN: ${{ secrets.npm_token }}
 
     - run: npm run test:coverage
-    
