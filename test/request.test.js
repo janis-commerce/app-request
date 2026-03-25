@@ -1,5 +1,5 @@
 import {getUserInfo, getAccessToken} from '@janiscommerce/oauth-native';
-import {getBundleId} from '@janiscommerce/app-device-info';
+import {getAppInfo} from '@janiscommerce/app-device-info';
 import Request from '../lib/request.js';
 import {promiseWrapper} from '../lib/utils/helpers.js';
 import * as makeRequest from '../lib/utils/makeRequest.js';
@@ -43,19 +43,19 @@ describe('Request', () => {
 		});
 
 		it('detects "janisdev" when bundle id ends with ".beta"', () => {
-			getBundleId.mockReturnValueOnce('in.janis.picking.beta');
+			getAppInfo.mockReturnValueOnce({appName: 'picking', janisEnv: 'janisdev'});
 			const api = new Request();
 			expect(api.JANIS_ENV).toBe('janisdev');
 		});
 
 		it('detects "janisqa" when bundle id ends with ".qa"', () => {
-			getBundleId.mockReturnValueOnce('in.janis.picking.qa');
+			getAppInfo.mockReturnValueOnce({appName: 'picking', janisEnv: 'janisqa'});
 			const api = new Request();
 			expect(api.JANIS_ENV).toBe('janisqa');
 		});
 
 		it('returns null when bundle id is not a Janis app', () => {
-			getBundleId.mockReturnValueOnce('com.instaleap.app');
+			getAppInfo.mockReturnValueOnce({appName: null, janisEnv: null});
 			const api = new Request();
 			expect(api.JANIS_ENV).toBeNull();
 		});
