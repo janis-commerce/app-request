@@ -30,6 +30,7 @@ jest.mock('@janiscommerce/app-device-info', () => ({
 	getSystemVersion: jest.fn().mockReturnValue('unknown'),
 	getUniqueId: jest.fn().mockReturnValue('unknown'),
 	getModel: jest.fn().mockReturnValue('unknown'),
+	getAppInfo: jest.fn().mockReturnValue({appName: 'picking', janisEnv: 'janis'}),
 }));
 
 jest.mock('@janiscommerce/app-crashlytics', () =>

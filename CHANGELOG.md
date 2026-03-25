@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 
+### 2.8.0 - 2026-03-25
+
+- Auto-detection of environment (JANIS_ENV) in the Request constructor using getAppInfo() from app-device-info
+
 ### 2.7.0 - 2025-11-11
 
 ### Added
